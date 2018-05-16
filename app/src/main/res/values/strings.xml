@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">AppPrueba</string>
+    <!-- Se debe configurar la ruta del servicio web-->
+    <string name="url_wcf">http://13.58.247.254/Capacitaciones/Servicio/ServicioCapacitaciones.svc/</string>
+    <!-- Se configuran los nombres de los métodos que se llamaran (métodos expuestos por el WCF)-->
+    <string name="method_consultar_conocimientos">ConsultarConocimientos</string>
+    <string name="method_insertar_conocimientos">InsertarConocimientos</string>
+</resources>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="pruebas.appprueba.MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:text="Identificación: "
+        android:id="@+id/lblIdentificacion"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:gravity="left|center_vertical" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:id="@+id/edtIdentificacion"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/lblIdentificacion"
+        android:layout_toEndOf="@+id/lblIdentificacion"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/lblConocimiento"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignEnd="@+id/lblApellidos"
+        android:layout_alignRight="@+id/lblApellidos"
+        android:layout_below="@+id/lblIdentificacion"
+        android:gravity="left|center_vertical"
+        android:text="Nombres: " />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:id="@+id/edtNombres"
+        android:layout_below="@+id/edtIdentificacion"
+        android:layout_alignLeft="@+id/edtIdentificacion"
+        android:layout_alignStart="@+id/edtIdentificacion" />
+
+    <TextView
+        android:id="@+id/lblApellidos"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/lblConocimiento"
+        android:gravity="left|center_vertical"
+        android:text="Apellidos: " />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:id="@+id/edtApellidos"
+        android:layout_below="@+id/edtNombres"
+        android:layout_toRightOf="@+id/lblIdentificacion"
+        android:layout_toEndOf="@+id/lblIdentificacion" />
+
+    <TextView
+        android:id="@+id/lblTelefono"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/lblApellidos"
+        android:gravity="left|center_vertical"
+        android:text="Telefono:" />
+
+    <EditText
+        android:id="@+id/edtTelefono"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@+id/edtApellidos"
+        android:layout_alignStart="@+id/edtApellidos"
+        android:layout_below="@+id/edtApellidos" />
+
+    <TextView
+        android:id="@+id/lblDireccion"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/lblTelefono"
+        android:gravity="left|center_vertical"
+        android:text="Direccion:" />
+
+    <EditText
+        android:id="@+id/edtDireccion"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@+id/edtTelefono"
+        android:layout_alignStart="@+id/edtTelefono"
+        android:layout_below="@+id/edtTelefono" />
+
+    <TextView
+        android:id="@+id/lblCorreo"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/lblDireccion"
+        android:gravity="left|center_vertical"
+        android:text="Correo:" />
+
+    <EditText
+        android:id="@+id/edtCorreo"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@+id/edtDireccion"
+        android:layout_alignStart="@+id/edtDireccion"
+        android:layout_below="@+id/edtDireccion" />
+
+    <TextView
+        android:id="@+id/txtIdentificacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/lblCorreo"
+        android:layout_marginTop="51dp"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/txtNombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/txtIdentificacion"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/txtApellido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/txtNombre"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/txtTelefono"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/txtApellido"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/txtDireccion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/txtTelefono"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/txtCorreo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/txtTelefono"
+        android:layout_marginTop="20dp"
+        android:text="TextView" />
+
+</RelativeLayout>
