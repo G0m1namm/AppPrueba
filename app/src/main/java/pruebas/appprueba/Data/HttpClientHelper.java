@@ -24,6 +24,9 @@ import pruebas.appprueba.R;
  */
 public class HttpClientHelper {
 
+    // OperationName es el nombre del método que llamaremos
+    // params es un array de argumentos o parámetros que requiere el método como datos de entrada
+    // contexto es el contexto del layout que realiza el llamado
     public static JSONArray GET(String OperationName, Argumento[] params, Context contexto) throws JSONException {
         String parametros = "?";
         JSONObject resultado = null;
@@ -35,6 +38,7 @@ public class HttpClientHelper {
         DefaultHttpClient httpClient = new DefaultHttpClient((HttpParams)basicHttpParams);
 
         // Se concatenan los parámetros que irán por query string
+        // Se crea el query string a partir de los argumentos enviados. Si es vacio, no lo llena
         for(int i = 0; i < params.length; i++){
             Argumento item = params[i];
             parametros += item.getKey() + "=" + item.getValue();
@@ -45,6 +49,8 @@ public class HttpClientHelper {
         }
 
         try{
+            // Se realiza el llamado y se obtiene el resultado. Recordemos que finalmente el resultado se
+            // traduce en un archivo JSON que se manipula para leer los objetos en el resultado final
             HttpGet request = new HttpGet(contexto.getResources().getString(R.string.url_wcf) + OperationName + parametros);
             BasicResponseHandler basicResponseHandler = new BasicResponseHandler();
             resultado = new JSONObject((String)httpClient.execute((HttpUriRequest)request, (ResponseHandler)basicResponseHandler));

@@ -39,6 +39,7 @@ public class IngresarActivity extends AppCompatActivity {
     Button btnIngresar;
     ImageView btnRegresar;
     List<Conocimientos> lstListadoRegistros = new ArrayList<Conocimientos>();
+    Argumento[] datos;
 
 
     @Override
@@ -51,51 +52,54 @@ public class IngresarActivity extends AppCompatActivity {
         edtId = (EditText) findViewById(R.id.edtId);
         edtConocimiento = (EditText) findViewById(R.id.edtConocimiento);
 
-        btnIngresarConocimiento.setOnClickListener(new View.OnClickListener(){
+        btnIngresarConocimiento.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 InsertarConocimientos();
             }
         });
 
         btnRegresar = (ImageView) findViewById(R.id.btnRegresar);
-        btnRegresar.setOnClickListener(new View.OnClickListener(){
+        btnRegresar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 onBackPressed();
             }
         });
 
     }
 
-    private void InsertarConocimientos(){
-        Argumento[] datos = new Argumento[1];
-        datos[0].setKey("_id");
-        datos[0].setValue(edtId.getText().toString());
-        datos[1].setKey("Conocimientos");
-        datos[1].setValue(edtConocimiento.getText().toString());
+    // Se crea un método que realiza la consulta.
+    private void InsertarConocimientos() {
+        // El método que llamaremos no contiene parámetros
+        datos = new Argumento[2];
+        datos[0] = new Argumento("id",edtId.getText().toString());
+        datos[1] = new Argumento("nombre",edtConocimiento.getText().toString());
 
+        // La clase TareaAsync se crea para realizar el llamado asincrono al servicio.
         TareaAsync tarea = new TareaAsync();
+        // Se asignan los parámetros
         tarea.setDatos(datos);
+        // Se asigna el método. Este método fue el configurado en el paso inicial (archivo strings.xml)
         tarea.setMetodo(getResources().getString(R.string.method_insertar_conocimientos));
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             tarea.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-        }
-        else
-        {
+        } else {
             tarea.execute();
         }
-
     }
 
-    private void CargarConocimientos(){
-        IngresarActivity.AdaptadorIntereses adapter = new IngresarActivity.AdaptadorIntereses(IngresarActivity.this, lstListadoRegistros);
+    private void CargarIntereses() {
+        AdaptadorIntereses adapter = new AdaptadorIntereses(IngresarActivity.this, lstListadoRegistros);
         ListView lstListadoIntereses = (ListView) findViewById(R.id.lstIntereses);
         lstListadoIntereses.setAdapter(adapter);
     }
-    public class TareaAsync extends AsyncTask<Object, Object, Object>{
 
+    // Se debe crear una clase que realice la operación asincrona en un hilo diferente al hilo de ejecución principal de la app
+    public class TareaAsync extends AsyncTask<Object, Object, Object> {
+
+        // Posee unos argumentos
         public Argumento[] getDatos() {
             return datos;
         }
@@ -104,6 +108,7 @@ public class IngresarActivity extends AppCompatActivity {
             this.datos = datos;
         }
 
+        // Posee un método
         public String getMetodo() {
             return Metodo;
         }
@@ -118,84 +123,102 @@ public class IngresarActivity extends AppCompatActivity {
         // Variable que contiene el nombre del método a llamar
         public String Metodo;
 
-        protected Object doInBackground(Object... params){
+        // Es el evento que se dispara cuando se hace el llamado a la clase.
+
+        protected Object doInBackground(Object... params) {
+            // Se crea una lista de objetos, no conocemos su estructura
             List<Object> lstObject = new ArrayList<Object>();
 
-            try{
+            try {
+                // Se hace el llamado a la clase HttpClientHelper con los valores configurados para la instancia
+                // TaskAsync
                 JSONArray lstResultado = HttpClientHelper.GET(getMetodo(), getDatos(), IngresarActivity.this);
 
-                for(int i=0; i < lstResultado.length(); i++){
+                // Se adiciona objeto por objeto del resultado al listado de objetos tipo Interes.
+                // Si se va a realizar varios llamados al servicio, es necesario crear la lógica
+                // puede ser a través de un switch(getMetodo()) y de acuerdo a cada método crear la
+                // lista o el objeto a manipular.
+                for (int i = 0; i < lstResultado.length(); i++) {
                     JSONObject item = lstResultado.getJSONObject(i);
-                    Conocimientos registro = new Conocimientos(Integer.valueOf(item.getString("_id")), item.getString("Conocimientos"));
+                    Conocimientos registro = new Conocimientos(Integer.valueOf(item.getString("id")), item.getString("Conocimientos"));
                     lstObject.add(registro);
                 }
-            }
-            catch(Exception ex){
-                Log.e("Consulta Conocimientos", ex.getMessage());
-            }
-            finally {
+            } catch (Exception ex) {
+                Log.e("Ingreso de Intereses", ex.getMessage());
+            } finally {
                 return lstObject;
             }
         }
 
-
-        public void onPreExecute(){
+        // Este es un evento que se ejecuta antes del evento doInBackground
+        // Puede por ejemplo iniciar un Progress para mostrarle al usuario que inició un proceso
+        public void onPreExecute() {
 
         }
 
         // Cuando finaliza la consulta, se ejecuta este método
-        public void onPostExecute(Object result){
+        // Por ejemplo, acá también es necesario tener un switch de acuerdo al método
+        // para establecer el comportamiento de la pantalla a partir del llamado al servicio.
+        public void onPostExecute(Object result) {
             processFinish(result);
             super.onPostExecute(result);
         }
 
-
     }
 
-    public void processFinish(Object result){
+    // Al llamar al processFinish, se entrega el resultado a la variable global creada inicialmente
+    // y se llama al método que crea los registros en pantalla
+    public void processFinish(Object result) {
         lstListadoRegistros = (List<Conocimientos>) result;
-        CargarConocimientos();
+        CargarIntereses();
     }
 
+    // Se debe crear el adapter para que al momento de obtener los resultados desde el WCF se puede
     // mapear a una entidad propia de la app y se entregue el resultado al listview
     class AdaptadorIntereses extends ArrayAdapter<Conocimientos> {
 
-        AdaptadorIntereses(Context context, List<Conocimientos> datos){
+        // Con este adapter, lo que hacemos es leer cada uno de los objetos resultantes del llamado al
+        // servicio y renderizarlos en la pantalla
+        AdaptadorIntereses(Context context, List<Conocimientos> datos) {
             super(context, R.layout.listitem_intereses, datos);
         }
 
-        public View getView(int position, View convertView, ViewGroup parent){
+        public View getView(int position, View convertView, ViewGroup parent) {
             View item = convertView;
-            ConocimientosActivity.InteresesHolder holder;
+            InteresesHolder holder;
 
-            if(item == null)
-            {
+            if (item == null) {
                 LayoutInflater inflater = LayoutInflater.from(getContext());
                 item = inflater.inflate(R.layout.listitem_intereses, null);
 
                 // Se mapea cada item del listado con los controles del layout
-                holder = new ConocimientosActivity.InteresesHolder();
+                holder = new InteresesHolder();
+                // Se asigna a cada control del holder, su respectivo control del layout listitem_intereses
                 holder.id = (TextView) item.findViewById(R.id.txtId);
                 holder.intereses = (TextView) item.findViewById(R.id.txtInteres);
                 item.setTag(holder);
-            } else{
-                holder = (ConocimientosActivity.InteresesHolder)item.getTag();
+            } else {
+                holder = (InteresesHolder) item.getTag();
             }
 
             // lstListadoRegistros es el listado con los resultados
             final Conocimientos registro = lstListadoRegistros.get(position);
+            // Se asignan los textos a cada control del holder
             holder.intereses.setText(registro.getConocimientos());
             holder.id.setText(String.valueOf(registro.getId()));
 
-            return(item);
+            return (item);
         }
     }
+
+
     // Esto nos ayudará a tener un listview más completo
     // se crean los controles que se crearán por cada item del listview
-    class InteresesHolder{
+    static class InteresesHolder {
+        // Este Holder debe ser consistente con los controles que se están
+        // configurando para cada uno de los objetos de la lista resultante
+        // Tiene los mismos componentes que el layout listitem_intereses
         TextView id;
         TextView intereses;
     }
-
-
 }
